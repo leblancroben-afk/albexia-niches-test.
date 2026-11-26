@@ -98,28 +98,8 @@
   <link rel="stylesheet" href="/css/themes.css">
   <link rel="icon" type="image/png" sizes="512x512" href="https://albexia.com/assets/logo-512.png">
   <link rel="stylesheet" href="css/soumettre-accueil.css">
-<script>
-/* Diagnostic test : affiche sur la page l'état des fichiers et les erreurs JS */
-(function () {
-  var lignes = [];
-  function bandeau() {
-    var b = document.getElementById('diag-test');
-    if (!b) { b = document.createElement('div'); b.id = 'diag-test';
-      b.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#111;color:#fff;font:12px/1.4 monospace;padding:8px 10px;max-height:40vh;overflow:auto;white-space:pre-wrap';
-      document.body.appendChild(b); }
-    b.textContent = lignes.join('\n');
-  }
-  window.addEventListener('error', function (e) { lignes.push('ERREUR JS : ' + e.message + ' (' + (e.filename || '') + ':' + (e.lineno || '') + ')'); bandeau(); });
-  window.addEventListener('unhandledrejection', function (e) { lignes.push('PROMESSE : ' + (e.reason && e.reason.message || e.reason)); bandeau(); });
-  window.addEventListener('DOMContentLoaded', function () {
-    ['js/firebase-config.js', 'js/auth.js', 'js/plans-cards.js'].forEach(function (f) {
-      fetch(f, { cache: 'no-store' }).then(function (r) { lignes.push(f + ' -> HTTP ' + r.status); bandeau(); })
-        .catch(function (err) { lignes.push(f + ' -> ECHEC ' + err.message); bandeau(); });
-    });
-    lignes.push('URL de la page : ' + location.href); bandeau();
-  });
-})();
-</script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script>window.onTurnstileOk = function(t) { window.__turnstileTok = t; };</script>
 </head>
 <body>
 
@@ -234,140 +214,74 @@
         <button class="home-niches-arrow next" id="home-niches-next" type="button" data-i18n-aria-label="idx.lbNext" aria-label="Suivant">&#8250;</button>
       </div>
     </div>
-    <!-- Soumission (même système que soumettre/) -->
-    <div class="container">
-  <div class="stepper" id="stepper">
-    <div class="step active" id="step1">
-      <div class="step-num">1</div>
-      <div class="step-label" data-i18n="soum.step1Label">Informations générales</div>
-    </div>
-    <div class="step-line" id="stepLine"></div>
-    <div class="step pending" id="step2">
-      <div class="step-num">2</div>
-      <div class="step-label" data-i18n="soum.step2Label">Choisissez votre visibilité</div>
-    </div>
-  </div>
-
-  <!-- Step 1 -->
-  <div class="panel visible" id="panel1">
-    <div class="panel-head">
-      <div class="panel-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8M8 16h5"/></svg>
-      </div>
-      <div class="panel-title-group">
-        <h2><span class="panel-num">1</span><span data-i18n="soum.step1Label">Informations générales</span></h2>
-        <p data-i18n="soum.step1Sub">Renseignez les informations principales de votre outil.</p>
-      </div>
+    <!-- Soumission : formules d'abord, formulaire ensuite (même logique que soumettre/) -->
+    <div class="container home-block home-plans-block">
+      <div class="home-block-head"><h2>Choisissez votre visibilité</h2></div>
+      <p class="home-block-sub">Sélectionnez le plan qui correspond le mieux à vos objectifs.</p>
+      <div id="plans-cards-container"></div>
     </div>
 
-    <form id="form-step1">
-      <div class="form-grid">
-        <div class="field">
-          <label><span data-i18n="soum.labelUrl">URL de l'outil</span> <span class="req">*</span></label>
-          <div class="input-wrap">
-            <svg class="leading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.07 0l1.93-1.93a5 5 0 00-7.07-7.07L10.5 5"/><path d="M14 11a5 5 0 00-7.07 0L5 12.93a5 5 0 007.07 7.07L13.5 19"/></svg>
-            <input type="url" id="tool-url" placeholder="https://exemple.com" data-i18n-placeholder="soum.urlPlaceholder" required>
+    <div id="modal-soumission" class="modal-soum" role="dialog" aria-modal="true">
+      <div class="modal-soum-inner">
+        <div class="modal-soum-top">
+          <div>
+            <div class="modal-soum-title">Soumettre un outil</div>
+            <div class="modal-soum-tier" id="modal-tier"></div>
           </div>
-          <div class="hint" data-i18n="soum.urlHint">Entrez l'URL officielle de l'outil</div>
+          <button type="button" class="modal-soum-close" id="modal-close" aria-label="Fermer">✕</button>
         </div>
-
-        <div class="field">
-          <label><span data-i18n="submit.labelName">Nom de l'outil</span> <span class="req">*</span></label>
-          <input type="text" id="tool-name" placeholder="Nom de l'outil" data-i18n-placeholder="soum.namePlaceholder" required>
-          <div class="hint" data-i18n="soum.nameHint">Le nom officiel de votre outil</div>
-        </div>
-
-        <div class="field">
-          <label><span data-i18n="soum.labelCat">Catégorie</span> <span class="req">*</span></label>
-          <select id="tool-cat" required>
-              <option value="" disabled selected data-i18n="sm.choose">— Choisir —</option>
-            </select>
-        </div>
-          <div class="field">
-            <label for="tool-prix">Modèle de tarification <span class="req">*</span></label>
-            <select id="tool-prix" required>
-              <option value="" disabled selected>— Choisir —</option>
-              <option value="gratuit">Gratuit</option>
-              <option value="freemium">Freemium</option>
-              <option value="payant">Payant</option>
-            </select>
+        <div id="modal-body">
+          <form id="form-step1" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label>URL de l'outil <span class="req">*</span></label>
+                <input type="url" id="tool-url" placeholder="https://exemple.com" required>
+                <div class="hint">Entrez l'URL officielle de l'outil</div>
+              </div>
+              <div class="field">
+                <label>Nom de l'outil <span class="req">*</span></label>
+                <input type="text" id="tool-name" placeholder="Nom de l'outil" required>
+                <div class="hint">Le nom officiel de votre outil</div>
+              </div>
+              <div class="field">
+                <label>Catégorie <span class="req">*</span></label>
+                <select id="tool-cat" required><option value="" disabled selected>— Choisir —</option></select>
+              </div>
+              <div class="field">
+                <label for="tool-prix">Modèle de tarification <span class="req">*</span></label>
+                <select id="tool-prix" required>
+                  <option value="" disabled selected>— Choisir —</option>
+                  <option value="gratuit">Gratuit</option>
+                  <option value="freemium">Freemium</option>
+                  <option value="payant">Payant</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Description <span class="req">*</span></label>
+                <textarea id="tool-desc" minlength="30" maxlength="900" placeholder="Décrivez votre outil, ses fonctionnalités principales, ses avantages..." required></textarea>
+                <div class="hint">Soyez clair et précis (minimum 30 caractères)</div>
+              </div>
+              <div class="field full">
+                <label>Votre email <span class="req">*</span></label>
+                <input type="email" id="tool-email" placeholder="contact@votreoutil.com" required>
+                <div class="hint">Utilisé uniquement pour vous contacter au sujet de votre soumission</div>
+              </div>
+            </div>
+          </form>
+          <div id="zone-login-requis" class="modal-login" style="display:none">
+            <p>Connectez-vous pour continuer vers le paiement.</p>
+            <button type="button" class="btn btn-primary" id="btnGoogleLogin">Continuer avec Google</button>
+            <p id="zone-login-erreur" style="display:none;color:#c2392b"></p>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-        <div class="field">
-          <label><span data-i18n="soum.labelDesc">Description</span> <span class="req">*</span></label>
-          <textarea id="tool-desc" minlength="30" maxlength="900" placeholder="Décrivez votre outil, ses fonctionnalités principales, ses avantages..." data-i18n-placeholder="soum.descPlaceholder" required></textarea>
-          <div class="hint" data-i18n="soum.descHint">Soyez clair et précis (minimum 30 caractères)</div>
+          <div id="zone-turnstile" style="display:none;justify-content:center;margin:12px 0">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAGFvyQqT8dICX8zc" data-callback="onTurnstileOk" data-theme="light"></div>
+          </div>
         </div>
-
-
-        <!-- Ajouté par rapport à la maquette : nécessaire pour que l'équipe Albexia puisse recontacter le créateur -->
-        <div class="field full">
-          <label><span data-i18n="submit.labelEmail">Votre email</span> <span class="req">*</span></label>
-          <input type="email" id="tool-email" placeholder="contact@votreoutil.com" data-i18n-placeholder="soum.emailPlaceholder" required>
-          <div class="hint" data-i18n="soum.emailHint">Utilisé uniquement pour vous contacter au sujet de votre soumission</div>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="btnCancel">Annuler</button>
+          <button type="button" class="btn btn-primary" id="btnContinue">Envoyer et continuer</button>
         </div>
       </div>
-
-      <div class="actions">
-        <button type="button" class="btn btn-ghost" id="btnCancel" data-i18n="soum.cancelBtn">Annuler</button>
-        <button type="button" class="btn btn-primary" id="btnContinue"><span data-i18n="soum.continueBtn">Continuer</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Step 2 -->
-  <div class="panel" id="panel2">
-    <div class="panel-head">
-      <div class="panel-icon" style="background:var(--bg3); border-color:var(--border-hover); color:var(--text);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.2H22l-6 4.4 2.3 7.2L12 16.4 5.7 20.8 8 13.6 2 9.2h7.6z"/></svg>
-      </div>
-      <div class="panel-title-group">
-        <h2><span class="panel-num">2</span><span data-i18n="soum.step2Label">Choisissez votre visibilité</span></h2>
-        <p data-i18n="soum.step2Sub">Sélectionnez le plan qui correspond le mieux à vos objectifs.</p>
-      </div>
-    </div>
-
-    <div id="zone-login-requis" style="display:none">
-      <p data-i18n="sm.loginReq">Pour Starter ou Featured, connectez-vous avant de payer.</p>
-      <button type="button" class="btn-google" id="btnGoogleLogin">
-        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
-        <span data-i18n="soum.googleLoginBtn">Continuer avec Google</span>
-      </button>
-      <p id="zone-login-erreur"></p>
-    </div>
-
-    <div class="turnstile-zone" style="display:flex;justify-content:center;margin:12px 0;">
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAGFvyQqT8dICX8zc" data-callback="onTurnstileOk" data-theme="light"></div>
-    </div>
-    <div id="plans-cards-container">
-      <p style="text-align:center;color:var(--text-muted);padding:2rem 0; position:relative; z-index:1;" data-i18n="soum.loadingPlans">Chargement des formules…</p>
-    </div>
-
-    <div class="actions">
-      <button class="btn btn-ghost" id="btnBack">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-        <span data-i18n="soum.backBtn">Retour</span>
-      </button>
-    </div>
-  </div>
-
     </div>
   </section>
 
@@ -671,83 +585,70 @@ function handleFooterNewsletter(e) {
 </script>
 
 
-  <script>window.onTurnstileOk = function(t) { window.__turnstileTok = t; };</script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script type="module">
   import { db, collection, addDoc, getDocs, serverTimestamp } from './js/firebase-config.js';
   import { loginWithGoogle } from './js/auth.js';
   import { afficherCartesPlans, PLANS_PAYANTS_OUVERTS } from './js/plans-cards.js';
 
-  const panel1 = document.getElementById('panel1');
-  const panel2 = document.getElementById('panel2');
-  const step1 = document.getElementById('step1');
-  const step2 = document.getElementById('step2');
-  const stepLine = document.getElementById('stepLine');
+  const WORKER_SOUMISSION_URL = 'https://albexia-paiement.leblancroben.workers.dev/soumettre-payant';
+  const modal = document.getElementById('modal-soumission');
+  const modalBody = document.getElementById('modal-body');
   const form1 = document.getElementById('form-step1');
   const zoneLogin = document.getElementById('zone-login-requis');
+  const zoneErr = document.getElementById('zone-login-erreur');
+  const zoneTurnstile = document.getElementById('zone-turnstile');
+  const btnSend = document.getElementById('btnContinue');
+  const lang = () => (window.detecterLangue ? window.detecterLangue() : 'fr');
+  const tt = k => (window.t ? window.t(k, lang()) : k);
 
-  function goToStep(n) {
-    if (n === 1) {
-      panel2.classList.remove('visible');
-      panel1.classList.add('visible');
-      step1.className = 'step active';
-      step2.className = 'step pending';
-      stepLine.classList.remove('done');
-    } else {
-      panel1.classList.remove('visible');
-      panel2.classList.add('visible');
-      step1.className = 'step done';
-      step2.className = 'step active';
-      stepLine.classList.add('done');
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  document.getElementById('btnContinue').addEventListener('click', () => {
-    if (!form1.reportValidity()) return;
-    goToStep(2);
-  });
-  document.getElementById('btnBack').addEventListener('click', () => goToStep(1));
-  document.getElementById('btnCancel').addEventListener('click', () => {
-    form1.reset();
-  });
-
-  // Connexion Google (Starter/Featured)
-  const tr = k => (window.t ? window.t(k, window.detecterLangue ? window.detecterLangue() : 'fr') : k);
+  let tierChoisi = null;
   let tierEnAttente = null;
+  let turnstileToken = window.__turnstileTok || null;
+  window.onTurnstileOk = function (token) { turnstileToken = token; window.__turnstileTok = token; };
+
+  function ouvrirModal(tier) {
+    tierChoisi = tier;
+    const payant = tier === 'starter' || tier === 'featured';
+    document.getElementById('modal-tier').textContent = { starter: 'Starter', featured: 'Featured' }[tier] || 'Gratuit';
+    zoneLogin.style.display = payant && !window._firebaseUser ? 'block' : 'none';
+    zoneTurnstile.style.display = payant ? 'flex' : 'none';
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function fermerModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('modal-close').addEventListener('click', fermerModal);
+  document.getElementById('btnCancel').addEventListener('click', fermerModal);
+  modal.addEventListener('click', e => { if (e.target === modal) fermerModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) fermerModal(); });
+
   document.getElementById('btnGoogleLogin').addEventListener('click', async () => {
-    const err = document.getElementById('zone-login-erreur');
-    const langue = window.detecterLangue ? window.detecterLangue() : 'fr';
-    err.style.display = 'none';
+    zoneErr.style.display = 'none';
     const res = await loginWithGoogle();
     if (!res.ok) {
-      err.textContent = res.error || t('soum.loginError', langue);
-      err.style.display = 'block';
+      zoneErr.textContent = res.error || tt('soum.loginError');
+      zoneErr.style.display = 'block';
       return;
     }
-    zoneLogin.classList.remove('show');
     zoneLogin.style.display = 'none';
     if (tierEnAttente) {
-      const tierRepris = tierEnAttente;
+      const repris = tierEnAttente;
       tierEnAttente = null;
-      payerSoumission(tierRepris, null);
+      payer(repris);
     }
   });
 
-  // Chargement des catégories depuis Firestore (même source que l'admin et le site)
   async function chargerCategoriesFormulaire() {
     const select = document.getElementById('tool-cat');
-    const langue = window.detecterLangue ? window.detecterLangue() : 'fr';
     const valeurChoisie = select.value;
     try {
       const snap = await getDocs(collection(db, 'categories'));
-      const categories = snap.docs
-        .map(d => d.data())
-        .filter(c => c.id && c.nom)
+      const categories = snap.docs.map(d => d.data()).filter(c => c.id && c.nom)
         .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
-      const libelle = c => (window.translateCategory ? window.translateCategory(c.id, langue) : c.nom) || c.nom;
-      select.innerHTML =
-        '<option value="" disabled selected>— Choisir —</option>' +
+      const libelle = c => (window.translateCategory ? window.translateCategory(c.id, lang()) : c.nom) || c.nom;
+      select.innerHTML = '<option value="" disabled selected>— Choisir —</option>' +
         categories.map(c => `<option value="${c.id}">${libelle(c)}</option>`).join('');
       if (valeurChoisie) select.value = valeurChoisie;
     } catch (err) {
@@ -758,7 +659,6 @@ function handleFooterNewsletter(e) {
   chargerCategoriesFormulaire();
   document.addEventListener('langchange', chargerCategoriesFormulaire);
 
-  // Données envoyées : uniquement les champs conservés à l'étape 1
   function ramasserDonnees(tier) {
     return {
       nom_outil:     document.getElementById('tool-name').value.trim(),
@@ -774,117 +674,82 @@ function handleFooterNewsletter(e) {
     };
   }
 
-  async function soumettre(tier, btn) {
-    const langue = window.detecterLangue ? window.detecterLangue() : 'fr';
-    const original = btn ? btn.textContent : '';
-    document.querySelectorAll('#plans-cards-container .btn-plan').forEach(b => b.disabled = true);
-    if (btn) btn.textContent = t('soum.sendingBtn', langue);
-
+  async function soumettre(tier) {
+    btnSend.disabled = true;
     try {
       await addDoc(collection(db, 'soumissions'), ramasserDonnees(tier));
-      panel2.innerHTML = `
-        <div style="text-align:center;padding:2rem 0; position:relative; z-index:1;">
+      modalBody.innerHTML = `
+        <div class="modal-success">
           <div style="font-size:3rem;margin-bottom:1rem;">✅</div>
-          <h3 style="color:var(--accent2);margin-bottom:.5rem;">${t('soum.successTitle', langue)}</h3>
-          <p style="color:var(--text-muted);">${t('soum.successText', langue)}</p>
+          <h3 style="color:var(--accent2);margin-bottom:.5rem;">${tt('soum.successTitle')}</h3>
+          <p style="color:var(--text-muted);">${tt('soum.successText')}</p>
+          <button type="button" class="btn btn-primary" id="btnDoneClose">OK</button>
         </div>`;
+      document.getElementById('btnDoneClose').addEventListener('click', fermerModal);
+      btnSend.style.display = 'none';
+      document.getElementById('btnCancel').style.display = 'none';
     } catch (err) {
-      document.querySelectorAll('#plans-cards-container .btn-plan').forEach(b => b.disabled = false);
-      if (btn) btn.textContent = original;
-      alert(t('soum.submitError', langue) + ' (' + err.message + ')');
+      alert(tt('soum.submitError') + ' (' + err.message + ')');
+    } finally {
+      btnSend.disabled = false;
     }
   }
 
-  // Callback appelé par les cartes générées par plans-cards.js (clic sur
-  // "Choisir Standard/Starter/Featured"). Remplace l'ancien choisirFormule()
-  // qui se contentait de synchroniser un <select> — ici on valide l'étape 1
-  // puis on soumet directement à Firestore.
-  const WORKER_SOUMISSION_URL = 'https://albexia-paiement.leblancroben.workers.dev/soumettre-payant';
-  let turnstileToken = window.__turnstileTok || null;
-  window.onTurnstileOk = function(token) { turnstileToken = token; window.__turnstileTok = token; };
-
-  async function payerSoumission(tier, btn) {
-    if (!PLANS_PAYANTS_OUVERTS && (tier === 'starter' || tier === 'featured')) {
-      alert('Les formules Starter et Featured sont temporairement indisponibles. La formule Gratuit reste ouverte.');
+  async function payer(tier) {
+    if (!window._firebaseUser) {
+      tierEnAttente = tier;
+      zoneLogin.style.display = 'block';
+      zoneLogin.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-    const original = btn ? btn.textContent : '';
-    document.querySelectorAll('#plans-cards-container .btn-plan').forEach(b => b.disabled = true);
-    if (btn) btn.textContent = '…';
+    if (!turnstileToken && window.turnstile) turnstileToken = window.turnstile.getResponse() || null;
+    if (!turnstileToken) { alert(tt('sm.alertCaptcha')); return; }
+    btnSend.disabled = true;
     try {
-      const donnees = ramasserDonnees(tier);
       const idToken = await window._firebaseUser.getIdToken();
       const res = await fetch(WORKER_SOUMISSION_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
-        body: JSON.stringify({ ...donnees, turnstile_token: turnstileToken }),
+        body: JSON.stringify({ ...ramasserDonnees(tier), turnstile_token: turnstileToken,
+          return_url: window.location.origin + window.location.pathname }),
       });
       const data = await res.json();
       if (!res.ok || !data.checkout_url) {
-        alert(data.error || 'Le paiement n\'a pas pu démarrer. Réessayez dans un instant.');
+        alert(data.error || "Le paiement n'a pas pu démarrer. Réessayez dans un instant.");
         return;
       }
       window.location.href = data.checkout_url;
     } catch (err) {
       console.error('[soumettre] Paiement impossible :', err);
-      alert(tr('sm.alertConn'));
+      alert(tt('sm.alertConn'));
     } finally {
-      document.querySelectorAll('#plans-cards-container .btn-plan').forEach(b => b.disabled = false);
-      if (btn) btn.textContent = original;
+      btnSend.disabled = false;
     }
   }
 
-  if (new URLSearchParams(location.search).get('paiement') === 'succes') {
-    alert(tr('sm.alertPaid'));
-  }
+  btnSend.addEventListener('click', () => {
+    if (!form1.reportValidity()) return;
+    if (tierChoisi === 'starter' || tierChoisi === 'featured') payer(tierChoisi);
+    else soumettre(tierChoisi);
+  });
 
-  window.choisirFormuleSoumission = function(tier, evt) {
+  window.choisirFormuleSoumission = function (tier, evt) {
     if (!PLANS_PAYANTS_OUVERTS && (tier === 'starter' || tier === 'featured')) {
       alert('Les formules Starter et Featured sont temporairement indisponibles. La formule Gratuit reste ouverte.');
       return;
     }
-    if (!form1.reportValidity()) { goToStep(1); return; }
-    const estPayant = tier === 'starter' || tier === 'featured';
-    const btn = evt && evt.target ? evt.target.closest('.btn-plan') : null;
-
-    if (estPayant && !window._firebaseUser) {
-      tierEnAttente = tier;
-      zoneLogin.classList.add('show');
-      zoneLogin.style.display = 'block';
-      zoneLogin.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-
-    if (estPayant) {
-      // Filet de sécurité : on lit directement le résultat du widget si le callback a été manqué
-      if (!turnstileToken && window.turnstile) {
-        turnstileToken = window.turnstile.getResponse() || null;
-      }
-      if (!turnstileToken) {
-        alert(tr('sm.alertCaptcha'));
-        return;
-      }
-      payerSoumission(tier, btn);
-      return;
-    }
-
-    soumettre(tier, btn);
+    ouvrirModal(tier);
   };
 
-  // Rendu initial des cartes depuis Firestore, et re-rendu si la langue change
-  // (les cartes ne sont pas gérées par le data-i18n statique — leur contenu
-  // vient de Firestore, pas du dictionnaire de traductions).
-  afficherCartesPlans('plans-cards-container', 'choisirFormuleSoumission', window.detecterLangue ? window.detecterLangue() : 'fr');
+  if (new URLSearchParams(location.search).get('paiement') === 'succes') {
+    alert(tt('sm.alertPaid'));
+  }
 
+  afficherCartesPlans('plans-cards-container', 'choisirFormuleSoumission', lang());
   const precedentOnLangueChange = window.onLangueChange;
-  window.onLangueChange = function(code) {
+  window.onLangueChange = function (code) {
     if (typeof precedentOnLangueChange === 'function') precedentOnLangueChange(code);
     afficherCartesPlans('plans-cards-container', 'choisirFormuleSoumission', code);
-    const label = document.getElementById('lang-current-label');
-    if (label) label.textContent = code.toUpperCase();
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === code);
-    });
   };
 </script>
 </body>
