@@ -674,9 +674,9 @@ function handleFooterNewsletter(e) {
   <script>window.onTurnstileOk = function(t) { window.__turnstileTok = t; };</script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script type="module">
-  import { db, collection, addDoc, getDocs, serverTimestamp } from 'js/firebase-config.js';
-  import { loginWithGoogle } from 'js/auth.js';
-  import { afficherCartesPlans, PLANS_PAYANTS_OUVERTS } from 'js/plans-cards.js';
+  import { db, collection, addDoc, getDocs, serverTimestamp } from './js/firebase-config.js';
+  import { loginWithGoogle } from './js/auth.js';
+  import { afficherCartesPlans, PLANS_PAYANTS_OUVERTS } from './js/plans-cards.js';
 
   const panel1 = document.getElementById('panel1');
   const panel2 = document.getElementById('panel2');
