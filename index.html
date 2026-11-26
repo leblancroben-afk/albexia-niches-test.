@@ -98,6 +98,28 @@
   <link rel="stylesheet" href="/css/themes.css">
   <link rel="icon" type="image/png" sizes="512x512" href="https://albexia.com/assets/logo-512.png">
   <link rel="stylesheet" href="css/soumettre-accueil.css">
+<script>
+/* Diagnostic test : affiche sur la page l'état des fichiers et les erreurs JS */
+(function () {
+  var lignes = [];
+  function bandeau() {
+    var b = document.getElementById('diag-test');
+    if (!b) { b = document.createElement('div'); b.id = 'diag-test';
+      b.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#111;color:#fff;font:12px/1.4 monospace;padding:8px 10px;max-height:40vh;overflow:auto;white-space:pre-wrap';
+      document.body.appendChild(b); }
+    b.textContent = lignes.join('\n');
+  }
+  window.addEventListener('error', function (e) { lignes.push('ERREUR JS : ' + e.message + ' (' + (e.filename || '') + ':' + (e.lineno || '') + ')'); bandeau(); });
+  window.addEventListener('unhandledrejection', function (e) { lignes.push('PROMESSE : ' + (e.reason && e.reason.message || e.reason)); bandeau(); });
+  window.addEventListener('DOMContentLoaded', function () {
+    ['js/firebase-config.js', 'js/auth.js', 'js/plans-cards.js'].forEach(function (f) {
+      fetch(f, { cache: 'no-store' }).then(function (r) { lignes.push(f + ' -> HTTP ' + r.status); bandeau(); })
+        .catch(function (err) { lignes.push(f + ' -> ECHEC ' + err.message); bandeau(); });
+    });
+    lignes.push('URL de la page : ' + location.href); bandeau();
+  });
+})();
+</script>
 </head>
 <body>
 
