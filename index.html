@@ -77,7 +77,6 @@
 
   <!-- ═══ STYLES ═══ -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/plans-cards.css">
 
   <!-- ═══ FIREBASE ═══ -->
   <script type="module" src="js/firebase-config.js"></script>
@@ -210,6 +209,14 @@
         </div>
         <button class="home-niches-arrow next" id="home-niches-next" type="button" data-i18n-aria-label="idx.lbNext" aria-label="Suivant">&#8250;</button>
       </div>
+    </div>
+    <!-- Formules (accueil) -->
+    <div class="container home-block home-plans-block">
+      <div class="home-block-head">
+        <h2>Nos formules</h2>
+      </div>
+      <p class="home-block-sub">Commencez gratuitement, passez à une formule payante quand vous voulez plus de visibilité.</p>
+      <div id="home-plans"></div>
     </div>
   </section>
 
@@ -513,5 +520,9 @@ function handleFooterNewsletter(e) {
 </script>
 
 
+<script type="module">
+  import { afficherFormulesAccueil } from './js/home-plans.js';
+  afficherFormulesAccueil('home-plans', window.detecterLangue ? window.detecterLangue() : 'fr');
+</script>
 </body>
 </html>
