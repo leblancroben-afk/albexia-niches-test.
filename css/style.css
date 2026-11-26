@@ -4248,3 +4248,12 @@ body.search-open { overflow: hidden; }
 .hp-login .hp-btn { width: auto; padding: 11px 18px; }
 .hp-turnstile { display: flex; justify-content: center; margin: 12px 0; }
 .hp-turnstile[hidden], .hp-login[hidden] { display: none; }
+
+/* ── Featured plus grande que les autres cartes ── */
+.hp-grid { align-items: center; }
+.hp-featured { transform: scale(1.08); z-index: 2; box-shadow: 0 18px 40px rgba(194, 65, 122, .35); padding: 36px 30px 30px; }
+.hp-featured:hover { transform: scale(1.08) translateY(-2px); }
+@media (max-width: 900px) {
+  .hp-featured { transform: none; padding: 30px 26px 26px; }
+  .hp-featured:hover { transform: none; }
+}
