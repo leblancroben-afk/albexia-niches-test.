@@ -528,6 +528,7 @@
 <script src="js/app.js"></script>
 <script src="js/hero-showcase.js"></script>
 <script src="js/faq-home.js"></script>
+<script src="js/neurons-bg.js"></script>
 
 <script type="module" src="js/collections-picker.js"></script>
 <script type="module">
@@ -815,7 +816,7 @@ function handleFooterNewsletter(e) {
     }
     function start() {
       if (reduceMotion || timer) return;
-      timer = setInterval(next, 4000); // changement toutes les 4 s
+      timer = setInterval(next, 8000); // changement toutes les 4 s
     }
     function stop() {
       if (timer) { clearInterval(timer); timer = null; }
