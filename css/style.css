@@ -4263,3 +4263,151 @@ body.search-open { overflow: hidden; }
 .home-sp-ico img { width: 72%; height: 72%; object-fit: contain; }
 .home-sp-txt strong { color: var(--text); font-size: 18px; }
 .home-sp-txt small, .home-sp-txt span { color: var(--text-muted); opacity: 1; font-size: 13px; }
+
+
+/* ═══════════════════════════════════════
+   SECTION ÉCOSYSTÈME ALBEXIA — accueil
+   Fond « Aurore boréale » + cartes en fondu
+   ═══════════════════════════════════════ */
+.ecosystem-section {
+  --feature-accent: #ff6b9d; /* rose Albexia — variable d'accent */
+  position: relative;
+  min-height: 350px;                 /* Desktop */
+  padding: 90px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Aurore boréale en pur CSS : halos colorés animés */
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 15%, rgba(255, 107, 157, 0.30), transparent 62%),
+    radial-gradient(ellipse 70% 55% at 85% 25%, rgba(52, 211, 153, 0.22), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(200, 107, 255, 0.20), transparent 62%),
+    #0a0a0f;
+  background-size: 220% 220%;
+  animation: eco-aurora 18s ease-in-out infinite alternate;
+}
+@keyframes eco-aurora {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-section { animation: none; }
+}
+
+/* Calque sombre de lisibilité par-dessus l'aurore */
+.ecosystem-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.75);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ecosystem-header,
+.fading-cards-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 760px;
+  text-align: center;
+}
+
+.ecosystem-header { margin-bottom: 36px; }
+.ecosystem-header h2 {
+  font-family: var(--serif);
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.ecosystem-header p {
+  font-size: clamp(14px, 2vw, 16px);
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.text-accent { color: var(--feature-accent, #ff6b9d); }
+
+/* ── Cartes en fondu ── */
+.fading-cards-container {
+  position: relative;
+  min-height: 350px; /* Desktop : évite tout saut de page au changement */
+}
+.fading-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+  background: rgba(26, 26, 36, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius, 4px);
+  padding: 40px 44px;
+  text-align: center;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.fading-card.active {
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+}
+.fading-card h3 {
+  font-family: var(--serif);
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.fading-card h3::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 2px;
+  margin: 14px auto 0;
+  background: var(--feature-accent, #ff6b9d);
+  border-radius: 2px;
+  opacity: 0.8;
+}
+.fading-card p {
+  font-size: clamp(13px, 1.6vw, 15px);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 300;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.fading-card-num {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--feature-accent, #ff6b9d);
+  margin-bottom: 16px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .ecosystem-section { padding: 64px 16px; min-height: 400px; }
+  .fading-cards-container { min-height: 400px; }
+  .fading-card { padding: 28px 22px; }
+}
+@media (max-width: 480px) {
+  .ecosystem-section { padding: 52px 14px; }
+  .fading-card { padding: 24px 18px; }
+  .fading-card-num { margin-bottom: 12px; }
+}
