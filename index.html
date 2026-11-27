@@ -165,6 +165,57 @@
       </div>
     </div>
 
+    <!-- ═══ SECTION ÉCOSYSTÈME ALBEXIA — 8 piliers en cartes enfondues ═══ -->
+    <section class="ecosystem-section" aria-label="Écosystème Albexia">
+      <div class="ecosystem-header">
+        <h2 data-i18n-html="eco.title">Découvrez, comparez et <span class="text-accent">maîtrisez</span> l'IA</h2>
+        <p data-i18n="eco.subtitle">Albexia vous accompagne à chaque étape de votre transition vers l'intelligence artificielle.</p>
+      </div>
+
+      <div class="fading-cards-container" id="fading-cards-container">
+        <div class="fading-card active">
+          <span class="fading-card-num">01 / 08</span>
+          <h3 data-i18n="eco.c1t">Outils IA</h3>
+          <p data-i18n="eco.c1x">Un annuaire dédié uniquement aux outils d'intelligence artificielle. Explorez notre sélection rigoureuse, testée et mise à jour régulièrement, pour trouver la solution parfaite qui répond à tous vos besoins technologiques et propulse vos projets.</p>
+        </div>
+        <div class="fading-card">
+          <span class="fading-card-num">02 / 08</span>
+          <h3 data-i18n="eco.c2t">Catégories</h3>
+          <p data-i18n="eco.c2x">Chaque outil est classé par catégorie claire et précise (rédaction, image, audio, code...), pour le trouver en un coup d'œil. Naviguez facilement dans notre base de données structurée et gagnez un temps précieux dans votre recherche quotidienne.</p>
+        </div>
+        <div class="fading-card">
+          <span class="fading-card-num">03 / 08</span>
+          <h3 data-i18n="eco.c3t">Galerie</h3>
+          <p data-i18n="eco.c3x">Des réalisations concrètes montrent ce que l'outil produit, quand c'est possible. Visualisez le potentiel réel de chaque intelligence artificielle grâce à des exemples inspirants, des rendus visuels captivants et des démonstrations qui parlent d'elles-mêmes.</p>
+        </div>
+        <div class="fading-card">
+          <span class="fading-card-num">04 / 08</span>
+          <h3 data-i18n="eco.c4t">Blog</h3>
+          <p data-i18n="eco.c4x">Des articles de fond sur les usages et les stratégies, pour donner plus de visibilité à votre outil. Découvrez les dernières tendances de l'IA, des guides pratiques et des conseils d'experts pour maîtriser la technologie et rester à la pointe.</p>
+        </div>
+        <div class="fading-card">
+          <span class="fading-card-num">05 / 08</span>
+          <h3 data-i18n="eco.c5t">Comparateur</h3>
+          <p data-i18n="eco.c5x">Un face-à-face clair et objectif entre plusieurs outils, pour choisir en toute connaissance de cause. Comparez les fonctionnalités, les tarifs et les avantages de chaque solution côte à côte avant de prendre votre décision finale en toute sérénité.</p>
+        </div>
+        <div class="fading-card">
+          <span class="fading-card-num">06 / 08</span>
+          <h3 data-i18n="eco.c6t">Niches</h3>
+          <p data-i18n="eco.c6x">Des outils spécifiquement regroupés par métier (avocats, marketeurs, développeurs...), pour trouver la solution la plus adaptée à votre activité. Optimisez votre flux de travail avec des intelligences artificielles conçues et pensées pour votre secteur.</p>
+        </div>
+        <div class="fading-card">
+          <span class="fading-card-num">07 / 08</span>
+          <h3 data-i18n="eco.c7t">Glossaire</h3>
+          <p data-i18n="eco.c7x">Des définitions claires et accessibles des grands thèmes de l'intelligence artificielle, pour mieux apprendre. Maîtrisez le jargon technique, comprenez les concepts clés et devenez un expert de l'IA pas à pas grâce à nos explications simples.</p>
+        </div>
+        <div class="fading-card">
+          <span class="fading-card-num">08 / 08</span>
+          <h3 data-i18n="eco.c8t">Tutoriels</h3>
+          <p data-i18n="eco.c8x">Chaque outil est accompagné de tutoriels vidéo détaillés, pour mieux le comprendre et l'utiliser au quotidien. Suivez nos guides pas à pas, apprenez les bonnes pratiques et tirez le maximum de chaque fonctionnalité pour booster votre productivité.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- Outils les mieux notés -->
     <div class="container home-block">
       <div class="home-block-head">
@@ -739,5 +790,37 @@ function handleFooterNewsletter(e) {
     afficherCartesPlans('plans-cards-container', 'choisirFormuleSoumission', code);
   };
 </script>
+  <!-- Section Écosystème Albexia : rotation des cartes en fondu -->
+  <script>
+  (function () {
+    var cards = document.querySelectorAll('#fading-cards-container .fading-card');
+    if (!cards.length) return;
+    var index = 0, timer = null;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(i) {
+      cards.forEach(function (c, k) { c.classList.toggle('active', k === i); });
+    }
+    function next() {
+      index = (index + 1) % cards.length;
+      show(index);
+    }
+    function start() {
+      if (reduceMotion || timer) return;
+      timer = setInterval(next, 4000); // changement toutes les 4 s
+    }
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+    // Pause au survol (accessibilité), reprise au départ
+    var wrap = document.getElementById('fading-cards-container');
+    wrap.addEventListener('mouseenter', stop);
+    wrap.addEventListener('mouseleave', start);
+    document.addEventListener('visibilitychange', function () {
+      document.hidden ? stop() : start();
+    });
+    start();
+  })();
+  </script>
 </body>
 </html>
