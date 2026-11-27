@@ -100,6 +100,7 @@
   <link rel="stylesheet" href="css/soumettre-accueil.css">
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script>window.onTurnstileOk = function(t) { window.__turnstileTok = t; };</script>
+  <link rel="stylesheet" href="css/hero-showcase.css">
 </head>
 <body>
 
@@ -120,41 +121,26 @@
         <p data-i18n="home.heroSub">Des outils IA classés par besoin, évalués par la communauté et présentés avec leurs tarifs.</p>
         <button class="btn-main" onclick="showPage('tools')" data-i18n="hero.ctaTools">Explorer les outils</button>
       </div>
-      <div class="home-hero-visual" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%" focusable="false">
-          <defs>
-            <filter id="hv-shadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.35"/>
-            </filter>
-            <clipPath id="hv-win-chatgpt"><rect x="0" y="0" width="480" height="340" rx="12"/></clipPath>
-            <clipPath id="hv-win-midjourney"><rect x="0" y="0" width="440" height="380" rx="12"/></clipPath>
-            <clipPath id="hv-win-runway"><rect x="0" y="0" width="440" height="260" rx="12"/></clipPath>
-          </defs>
-
-          <!-- 1. ChatGPT -->
-          <g transform="translate(40 50)" filter="url(#hv-shadow)">
-            <rect x="0" y="0" width="480" height="340" rx="12" fill="#FFFFFF"/>
-            <g clip-path="url(#hv-win-chatgpt)">
-              <image href="https://albexia.com/medias/blog/1791903968770_1_11zon_11zon_11zon.webp" x="0" y="0" width="480" height="340" preserveAspectRatio="xMidYMin slice"/>
-            </g>
-          </g>
-
-          <!-- 2. Midjourney -->
-          <g transform="translate(320 80)" filter="url(#hv-shadow)">
-            <rect x="0" y="0" width="440" height="380" rx="12" fill="#FFFFFF"/>
-            <g clip-path="url(#hv-win-midjourney)">
-              <image href="https://albexia.com/medias/blog/Screenshot_20261013-112810_Gallery_11zon.webp" x="0" y="0" width="440" height="380" preserveAspectRatio="xMidYMid slice"/>
-            </g>
-          </g>
-
-          <!-- 3. Runway -->
-          <g transform="translate(180 330)" filter="url(#hv-shadow)">
-            <rect x="0" y="0" width="440" height="260" rx="12" fill="#FFFFFF"/>
-            <g clip-path="url(#hv-win-runway)">
-              <image href="https://albexia.com/medias/blog/Screenshot_20261013-112726_Gallery_11zon.webp" x="0" y="0" width="440" height="260" preserveAspectRatio="xMidYMid slice"/>
-            </g>
-          </g>
-        </svg>
+      <div class="home-hero-visual showcase" id="hero-showcase">
+        <div class="showcase-halo" aria-hidden="true"></div>
+      
+        <!-- Les compositions sont injectées par renderHeroShowcase() (js/app.js).
+             Contenu de secours statique si Firebase n'a pas encore répondu : -->
+        <div class="showcase-stage is-loading">
+          <div class="showcase-card sc-back">
+            <div class="sc-head"><span class="sc-title">Sélection IA</span></div>
+            <div class="sc-skel"></div><div class="sc-skel"></div><div class="sc-skel"></div>
+          </div>
+          <div class="showcase-card sc-center">
+            <div class="sc-head"><span class="sc-title">Comparer</span><span class="sc-vs">VS</span></div>
+            <div class="sc-skel"></div><div class="sc-skel"></div>
+          </div>
+          <div class="showcase-card sc-front">
+            <div class="sc-skel tall"></div>
+          </div>
+        </div>
+      
+        <div class="showcase-dots" id="showcase-dots" role="tablist" aria-label="Compositions"></div>
       </div>
     </div>
 
@@ -482,6 +468,7 @@
 <script src="js/categories-articles.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/app.js"></script>
+<script src="js/hero-showcase.js"></script>
 
 <script type="module" src="js/collections-picker.js"></script>
 <script type="module">
