@@ -97,10 +97,8 @@
   </style>
   <link rel="stylesheet" href="/css/themes.css">
   <link rel="icon" type="image/png" sizes="512x512" href="https://albexia.com/assets/logo-512.png">
-  <link rel="stylesheet" href="css/soumettre-accueil.css">
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script>window.onTurnstileOk = function(t) { window.__turnstileTok = t; };</script>
-  <link rel="stylesheet" href="css/hero-showcase.css">
 </head>
 <body>
 
@@ -269,7 +267,7 @@
       <div class="modal-soum-inner">
         <div class="modal-soum-top">
           <div>
-            <div class="modal-soum-title">Soumettre un outil</div>
+            <div class="modal-soum-title" data-i18n="home.form.title">Soumettre un outil</div>
             <div class="modal-soum-tier" id="modal-tier"></div>
           </div>
           <button type="button" class="modal-soum-close" id="modal-close" aria-label="Fermer">✕</button>
@@ -278,43 +276,43 @@
           <form id="form-step1" novalidate>
             <div class="form-grid">
               <div class="field">
-                <label>URL de l'outil <span class="req">*</span></label>
-                <input type="url" id="tool-url" placeholder="https://exemple.com" required>
-                <div class="hint">Entrez l'URL officielle de l'outil</div>
+                <label><span data-i18n="home.form.url">URL de l'outil</span> <span class="req">*</span></label>
+                <input type="url" id="tool-url" data-ph="home.form.placeUrl" required>
+                <div class="hint" data-i18n="home.form.urlHint">Entrez l'URL officielle de l'outil</div>
               </div>
               <div class="field">
-                <label>Nom de l'outil <span class="req">*</span></label>
-                <input type="text" id="tool-name" placeholder="Nom de l'outil" required>
-                <div class="hint">Le nom officiel de votre outil</div>
+                <label><span data-i18n="home.form.name">Nom de l'outil</span> <span class="req">*</span></label>
+                <input type="text" id="tool-name" data-ph="home.form.placeName" required>
+                <div class="hint" data-i18n="home.form.nameHint">Le nom officiel de votre outil</div>
               </div>
               <div class="field">
-                <label>Catégorie <span class="req">*</span></label>
-                <select id="tool-cat" required><option value="" disabled selected>— Choisir —</option></select>
+                <label><span data-i18n="home.form.cat">Catégorie</span> <span class="req">*</span></label>
+                <select id="tool-cat" required><option value="" disabled selected data-i18n="home.form.choose">— Choisir —</option></select>
               </div>
               <div class="field">
-                <label for="tool-prix">Modèle de tarification <span class="req">*</span></label>
+                <label for="tool-prix"><span data-i18n="home.form.prix">Modèle de tarification</span> <span class="req">*</span></label>
                 <select id="tool-prix" required>
-                  <option value="" disabled selected>— Choisir —</option>
-                  <option value="gratuit">Gratuit</option>
-                  <option value="freemium">Freemium</option>
-                  <option value="payant">Payant</option>
+                  <option value="" disabled selected data-i18n="home.form.choose">— Choisir —</option>
+                  <option value="gratuit" data-i18n="home.form.free">Gratuit</option>
+                  <option value="freemium" data-i18n="home.form.freemium">Freemium</option>
+                  <option value="payant" data-i18n="home.form.paid">Payant</option>
                 </select>
               </div>
               <div class="field">
-                <label>Description <span class="req">*</span></label>
-                <textarea id="tool-desc" minlength="30" maxlength="900" placeholder="Décrivez votre outil, ses fonctionnalités principales, ses avantages..." required></textarea>
-                <div class="hint">Soyez clair et précis (minimum 30 caractères)</div>
+                <label><span data-i18n="home.form.desc">Description</span> <span class="req">*</span></label>
+                <textarea id="tool-desc" minlength="30" maxlength="900" data-ph="home.form.placeDesc" required></textarea>
+                <div class="hint" data-i18n="home.form.descHint">Soyez clair et précis (minimum 30 caractères)</div>
               </div>
               <div class="field full">
-                <label>Votre email <span class="req">*</span></label>
-                <input type="email" id="tool-email" placeholder="contact@votreoutil.com" required>
-                <div class="hint">Utilisé uniquement pour vous contacter au sujet de votre soumission</div>
+                <label><span data-i18n="home.form.email">Votre email</span> <span class="req">*</span></label>
+                <input type="email" id="tool-email" data-ph="home.form.placeEmail" required>
+                <div class="hint" data-i18n="home.form.emailHint">Utilisé uniquement pour vous contacter au sujet de votre soumission</div>
               </div>
             </div>
           </form>
           <div id="zone-login-requis" class="modal-login" style="display:none">
-            <p>Connectez-vous pour continuer vers le paiement.</p>
-            <button type="button" class="btn btn-primary" id="btnGoogleLogin">Continuer avec Google</button>
+            <p data-i18n="home.form.loginText">Connectez-vous pour continuer vers le paiement.</p>
+            <button type="button" class="btn btn-primary" id="btnGoogleLogin" data-i18n="home.form.login">Continuer avec Google</button>
             <p id="zone-login-erreur" style="display:none;color:#c2392b"></p>
           </div>
           <div id="zone-turnstile" style="display:none;justify-content:center;margin:12px 0">
@@ -322,8 +320,8 @@
           </div>
         </div>
         <div class="actions">
-          <button type="button" class="btn btn-ghost" id="btnCancel">Annuler</button>
-          <button type="button" class="btn btn-primary" id="btnContinue">Envoyer et continuer</button>
+          <button type="button" class="btn btn-ghost" id="btnCancel" data-i18n="home.form.cancel">Annuler</button>
+          <button type="button" class="btn btn-primary" id="btnContinue" data-i18n="home.form.send">Envoyer et continuer</button>
         </div>
       </div>
     </div>
@@ -526,9 +524,6 @@
 <script src="js/categories-articles.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/app.js"></script>
-<script src="js/hero-showcase.js"></script>
-<script src="js/faq-home.js"></script>
-<script src="js/neurons-bg.js"></script>
 
 <script type="module" src="js/collections-picker.js"></script>
 <script type="module">
@@ -656,7 +651,7 @@ function handleFooterNewsletter(e) {
   function ouvrirModal(tier) {
     tierChoisi = tier;
     const payant = tier === 'starter' || tier === 'featured';
-    document.getElementById('modal-tier').textContent = { starter: 'Starter', featured: 'Featured' }[tier] || 'Gratuit';
+    document.getElementById('modal-tier').textContent = { starter: 'Starter', featured: 'Featured' }[tier] || tt('home.form.free');
     zoneLogin.style.display = payant && !window._firebaseUser ? 'block' : 'none';
     zoneTurnstile.style.display = payant ? 'flex' : 'none';
     modal.classList.add('open');
@@ -695,7 +690,7 @@ function handleFooterNewsletter(e) {
       const categories = snap.docs.map(d => d.data()).filter(c => c.id && c.nom)
         .sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
       const libelle = c => (window.translateCategory ? window.translateCategory(c.id, lang()) : c.nom) || c.nom;
-      select.innerHTML = '<option value="" disabled selected>— Choisir —</option>' +
+      select.innerHTML = '<option value="" disabled selected>' + tt('home.form.choose') + '</option>' +
         categories.map(c => `<option value="${c.id}">${libelle(c)}</option>`).join('');
       if (valeurChoisie) select.value = valeurChoisie;
     } catch (err) {
@@ -782,7 +777,7 @@ function handleFooterNewsletter(e) {
 
   window.choisirFormuleSoumission = function (tier, evt) {
     if (!PLANS_PAYANTS_OUVERTS && (tier === 'starter' || tier === 'featured')) {
-      alert('Les formules Starter et Featured sont temporairement indisponibles. La formule Gratuit reste ouverte.');
+      alert(tt('home.form.closed'));
       return;
     }
     ouvrirModal(tier);
@@ -792,13 +787,106 @@ function handleFooterNewsletter(e) {
     alert(tt('sm.alertPaid'));
   }
 
+  function traduireFormulaire() {
+    document.querySelectorAll('#modal-soumission [data-ph]').forEach(el => { el.placeholder = tt(el.dataset.ph); });
+  }
+  traduireFormulaire();
   afficherCartesPlans('plans-cards-container', 'choisirFormuleSoumission', lang());
   const precedentOnLangueChange = window.onLangueChange;
   window.onLangueChange = function (code) {
     if (typeof precedentOnLangueChange === 'function') precedentOnLangueChange(code);
     afficherCartesPlans('plans-cards-container', 'choisirFormuleSoumission', code);
+    traduireFormulaire();
+    chargerCategoriesFormulaire();
   };
 </script>
+  <!-- Section Écosystème Albexia : fond fibres de neurones -->
+  <script>
+/* Fond « fibres de neurones » de la section Écosystème : mouvement lent,
+   dessiné sur canvas, mis en pause hors écran et figé si l'utilisateur
+   préfère moins d'animations. Remplace l'aurore CSS. */
+(function () {
+  const hote = document.querySelector('.ecosystem-section');
+  if (!hote) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.className = 'eco-neurons';
+  canvas.setAttribute('aria-hidden', 'true');
+  hote.insertBefore(canvas, hote.firstChild);
+  const ctx = canvas.getContext('2d');
+
+  const reduire = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W = 0, H = 0, noeuds = [], visible = true, derniere = 0, raf = null;
+
+  function creer() {
+    const n = Math.round(Math.min(46, Math.max(26, (W * H) / 20000)));
+    noeuds = Array.from({ length: n }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.12, vy: (Math.random() - 0.5) * 0.12,
+      p: Math.random() * Math.PI * 2
+    }));
+  }
+
+  function dimensionner() {
+    const r = hote.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    creer();
+    if (reduire) dessiner();
+  }
+
+  function dessiner() {
+    ctx.clearRect(0, 0, W, H);
+    for (const n of noeuds) {
+      n.x += n.vx; n.y += n.vy; n.p += 0.006;
+      if (n.x < -20) n.x = W + 20; if (n.x > W + 20) n.x = -20;
+      if (n.y < -20) n.y = H + 20; if (n.y > H + 20) n.y = -20;
+    }
+    for (let i = 0; i < noeuds.length; i++) {
+      for (let j = i + 1; j < noeuds.length; j++) {
+        const a = noeuds[i], b = noeuds[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d > 210) continue;
+        const alpha = (1 - d / 210) * 0.6;
+        const mx = (a.x + b.x) / 2 + Math.sin(a.p + b.p) * 18;
+        const my = (a.y + b.y) / 2 + Math.cos(a.p - b.p) * 18;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.quadraticCurveTo(mx, my, b.x, b.y);
+        ctx.strokeStyle = `rgba(255,107,157,${alpha.toFixed(3)})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+    }
+    for (const n of noeuds) {
+      const pulse = 0.5 + 0.5 * Math.sin(n.p);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 1.6 + pulse * 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(52,211,153,${(0.35 + pulse * 0.35).toFixed(3)})`;
+      ctx.fill();
+    }
+  }
+
+  function boucle(t) {
+    raf = requestAnimationFrame(boucle);
+    if (!visible || t - derniere < 40) return; // ~25 images/s : fluide et léger
+    derniere = t;
+    dessiner();
+  }
+
+  dimensionner();
+  if (!reduire) raf = requestAnimationFrame(boucle);
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(hote);
+  }
+  let t = null;
+  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(dimensionner, 200); });
+})();
+  </script>
   <!-- Section Écosystème Albexia : rotation des cartes en fondu -->
   <script>
   (function () {
