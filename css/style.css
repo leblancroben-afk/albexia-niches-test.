@@ -4248,3 +4248,18 @@ body.search-open { overflow: hidden; }
 .home-sp-card:hover { background: #fff; border-color: transparent; }
 .home-sp-ico { width: 60px; height: 60px; }
 .home-sp-txt strong { font-size: 17px; }
+
+/* ═══ Outils sponsorisés : lisibilité thème sombre, logos plus grands ═══ */
+.home-sp-card {
+  background: var(--surface);
+  color: var(--text);
+}
+.home-sp-card:hover { background: var(--surface2, var(--surface)); }
+.home-sp-ico {
+  width: 72px; height: 72px;
+  font-size: 30px;
+  display: flex; align-items: center; justify-content: center;
+}
+.home-sp-ico img { width: 72%; height: 72%; object-fit: contain; }
+.home-sp-txt strong { color: var(--text); font-size: 18px; }
+.home-sp-txt small, .home-sp-txt span { color: var(--text-muted); opacity: 1; font-size: 13px; }
