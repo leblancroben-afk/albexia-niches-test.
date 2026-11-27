@@ -197,3 +197,44 @@ a.sc-front:hover { box-shadow: 0 30px 56px -20px rgba(20,18,16,.34); transform: 
   .showcase-stage { height: 440px; }
   .showcase-card { touch-action: pan-y; }
 }
+
+/* ═══ V2 — composition éditoriale : cartes grandes, irrégulières, débordantes ═══ */
+.home-hero-visual.showcase { overflow: visible; }
+.showcase { min-height: 0; }
+.showcase-stage { height: 540px; }
+@media (max-width: 900px) { .showcase-stage { height: 480px; } }
+
+/* Transition entre compositions : fondu + glissement léger, sans coupure */
+.showcase-comp {
+  transition: opacity .9s cubic-bezier(.22,.61,.36,1),
+              transform .9s cubic-bezier(.22,.61,.36,1),
+              filter .9s ease;
+  transform: translate3d(16px, 0, 0) scale(.98);
+  filter: blur(3px);
+  pointer-events: none;
+}
+.showcase-comp.active { transform: none; filter: none; pointer-events: auto; }
+
+/* Dérive douce : on anime `translate` (pas de margin, donc pas de saccade) */
+.showcase-card {
+  animation: sc-drift 9s ease-in-out infinite;
+  will-change: translate, transform;
+}
+@keyframes sc-drift {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -7px; }
+}
+@media (prefers-reduced-motion: reduce) { .showcase-card { animation: none; } }
+
+/* Cartes plus grandes, positions et rotations irrégulières */
+.sc-back   { left: -5%; top: 2%;  width: 66%; transform: rotate(-5deg); animation-duration: 9.5s; }
+.sc-center { left: 27%; top: 17%; width: 62%; transform: rotate(2.2deg); animation-duration: 7.5s; z-index: 2; }
+.sc-front  { right: -10%; top: 46%; width: 60%; transform: rotate(-2.4deg); animation-duration: 8.4s; z-index: 3; }
+.sc-back, .sc-center, .sc-front { padding: 22px 24px; }
+
+/* Pagination : sous la zone héro, jamais sur les cartes */
+.showcase-dots {
+  position: relative; left: auto; bottom: auto; transform: none;
+  display: flex; justify-content: center; gap: 8px;
+  margin-top: 28px;
+}

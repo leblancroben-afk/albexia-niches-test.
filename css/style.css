@@ -4228,3 +4228,23 @@ body.search-open { overflow: hidden; }
   .home-niche-card { flex: 0 0 88%; height: 600px; }
   .home-niche-content { padding: 60px 20px 18px; }
 }
+
+/* ═══ Outils sponsorisés : cartes agrandies, bords fondus, sans contour rigide ═══ */
+.home-marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+  padding: 8px 0;
+}
+.home-marquee-track { gap: 18px; }
+.home-sp-card {
+  min-width: 360px;
+  padding: 22px 26px;
+  gap: 18px;
+  border: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .55);
+  box-shadow: none;
+}
+.home-sp-card:hover { background: #fff; border-color: transparent; }
+.home-sp-ico { width: 60px; height: 60px; }
+.home-sp-txt strong { font-size: 17px; }
