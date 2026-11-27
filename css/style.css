@@ -4186,8 +4186,8 @@ body.search-open { overflow: hidden; }
 /* ── Métiers : image plein cadre, texte posé sur l'image (lisible) ── */
 .home-niche-card {
   position: relative;
-  flex: 0 0 440px;
-  height: 580px;
+  flex: 0 0 480px;
+  height: 640px;
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -4201,18 +4201,30 @@ body.search-open { overflow: hidden; }
   height: 100%;
 }
 .home-niche-media img { width: 100%; height: 100%; object-fit: cover; }
+/* Bloc de texte court, en bas : l'image reste visible au-dessus */
 .home-niche-content {
   position: absolute;
   left: 0; right: 0; bottom: 0;
   z-index: 2;
-  padding: 90px 26px 26px;
-  background: linear-gradient(to top, rgba(10,10,15,.94) 0%, rgba(10,10,15,.82) 40%, rgba(10,10,15,.45) 70%, rgba(10,10,15,0) 100%);
+  padding: 70px 24px 22px;
+  background: linear-gradient(to top, rgba(10,10,15,.92) 0%, rgba(10,10,15,.75) 50%, rgba(10,10,15,0) 100%);
   color: #fff;
 }
-.home-niche-title { color: #fff; font-size: 22px; line-height: 1.2; text-shadow: 0 2px 14px rgba(0,0,0,.7); }
-.home-niche-desc { color: rgba(255,255,255,.94); font-size: 13.5px; line-height: 1.55; text-shadow: 0 1px 8px rgba(0,0,0,.8); margin-bottom: 14px; }
+.home-niche-title { color: #fff; font-size: 20px; line-height: 1.2; margin-bottom: 8px; text-shadow: 0 2px 14px rgba(0,0,0,.7); }
+.home-niche-desc {
+  color: rgba(255,255,255,.94);
+  font-size: 13px;
+  line-height: 1.5;
+  text-shadow: 0 1px 8px rgba(0,0,0,.8);
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .home-niche-cta { color: #fff; border-color: rgba(255,255,255,.7); background: rgba(10,10,15,.35); }
 .home-niche-cta.is-ready:hover { background: #fff; color: #0a0a0f; border-color: #fff; }
 @media (max-width: 900px) {
-  .home-niche-card { flex: 0 0 84%; height: 540px; }
+  .home-niche-card { flex: 0 0 88%; height: 600px; }
+  .home-niche-content { padding: 60px 20px 18px; }
 }
