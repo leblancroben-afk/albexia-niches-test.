@@ -130,7 +130,7 @@
 }
 
 /* ── Carte avant : fiche détaillée ── */
-a.sc-front { text-decoration: none; color: inherit; display: block; }
+.sc-front { cursor: default; }
 a.sc-front:hover { box-shadow: 0 30px 56px -20px rgba(20,18,16,.34); transform: rotate(-1.2deg) translateY(-3px); }
 .sc-front-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .sc-front-head .sc-logo { width: 34px; height: 34px; font-size: 15px; }
@@ -185,18 +185,3 @@ a.sc-front:hover { box-shadow: 0 30px 56px -20px rgba(20,18,16,.34); transform: 
 .showcase-dots button.active { width: 20px; background: var(--sh-pink); }
 .showcase:hover .showcase-dots button { background: rgba(20,18,16,.3); }
 .showcase:hover .showcase-dots button.active { background: var(--sh-pink); }
-
-/* ── Responsive : composition empilée, aucun débordement ── */
-@media (max-width: 900px) {
-  .showcase { min-height: 0; padding-bottom: 30px; }
-  .showcase-stage { height: auto; }
-  .showcase-comp { position: static; display: none; opacity: 1; transform: none; }
-  .showcase-comp.active { display: block; }
-  .showcase-card {
-    position: static; width: 100%;
-    transform: none !important; animation: none;
-    margin-bottom: 12px; box-shadow: var(--sh-shadow-sm);
-  }
-  .sc-front:hover { transform: translateY(-2px) !important; }
-  .showcase-dots { bottom: 0; }
-}
