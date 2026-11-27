@@ -81,7 +81,7 @@
       ? `<span class="sc-note">★ ${r.ratingAverage.toFixed(1)} (${r.ratingCount} ${t('idx.ratingReviewsSuffix', lang) || 'avis'})</span>`
       : '';
     return `
-      <a class="showcase-card sc-front" href="${href}"${ext}>
+      <div class="showcase-card sc-front">
         <div class="sc-front-head">
           ${scLogo(tool)}
           <div><b>${tool.name}</b><small>${catLabel(tool.category, lang)}</small></div>
@@ -91,7 +91,7 @@
         <div class="sc-front-cta">${buildToolPageUrl(tool)
           ? (t('quiz.viewSheet', lang) || 'Guide complet →')
           : (t('home.showcaseOfficial', lang) || 'Site officiel →')}</div>
-      </a>`;
+      </div>`;
   }
 
   async function renderHeroShowcase() {
