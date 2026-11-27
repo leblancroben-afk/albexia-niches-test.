@@ -1,0 +1,202 @@
+/* ═══════════════════════════════════════════════════════════
+   HERO SHOWCASE — Albexia  (à coller à la fin de css/style.css)
+   Composition "product showcase" : cartes flottantes superposées,
+   alimentées par les vraies données des outils (js/app.js).
+   Identité : fond crème, encre noire, rose Albexia #ff6b9d.
+   ═══════════════════════════════════════════════════════════ */
+
+.showcase {
+  --sh-cream:   #f5f1ea;
+  --sh-ink:     #141210;
+  --sh-muted:   #6f6a62;
+  --sh-pink:    #ff6b9d;
+  --sh-card:    #fffdf9;
+  --sh-line:    rgba(20, 18, 16, .09);
+  --sh-shadow:  0 24px 48px -20px rgba(20,18,16,.28), 0 4px 12px rgba(20,18,16,.06);
+  --sh-shadow-sm: 0 12px 28px -14px rgba(20,18,16,.22);
+  position: relative;
+  min-height: 420px;
+}
+
+/* Halo lumineux discret en arrière-plan */
+.showcase-halo {
+  position: absolute;
+  left: 50%; top: 46%;
+  width: 75%; height: 75%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(255,107,157,.16), transparent 72%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* Une composition = 3 cartes superposées */
+.showcase-stage { position: relative; height: 420px; }
+.showcase-stage.is-loading .showcase-card { animation: none; }
+
+/* ── Base carte ── */
+.showcase-card {
+  position: absolute;
+  background: var(--sh-card);
+  border: 1px solid var(--sh-line);
+  border-radius: var(--radius);
+  box-shadow: var(--sh-shadow);
+  padding: 16px 18px;
+  animation: showcase-float 7s ease-in-out infinite;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+@keyframes showcase-float {
+  0%, 100% { margin-top: 0; }
+  50%      { margin-top: -9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .showcase-card { animation: none; }
+  .showcase-comp { transition: none; }
+}
+
+/* Profondeurs : arrière / centre / premier plan */
+.sc-back {
+  left: 1%; top: 3%;
+  width: 47%; z-index: 1;
+  transform: rotate(-3.5deg);
+  animation-delay: .6s;
+}
+.sc-center {
+  left: 27%; top: 20%;
+  width: 46%; z-index: 2;
+  transform: rotate(1.6deg);
+}
+.sc-front {
+  right: 0; top: 36%;
+  width: 43%; z-index: 3;
+  transform: rotate(-1.2deg);
+  animation-delay: 1.2s;
+}
+
+/* ── En-têtes de carte ── */
+.sc-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-bottom: 10px;
+}
+.sc-title { font-family: var(--serif); font-weight: 700; font-size: 14px; color: var(--sh-ink); }
+.sc-count {
+  font-size: 10px; font-weight: 600; color: var(--sh-pink);
+  background: rgba(255,107,157,.1); padding: 2px 9px; border-radius: 99px;
+}
+.sc-vs { font-size: 11px; font-weight: 800; color: var(--sh-pink); letter-spacing: .08em; }
+
+/* ── Carte arrière : sélection d'outils ── */
+.sc-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 0; border-top: 1px solid var(--sh-line);
+}
+.sc-row:first-of-type { border-top: 0; }
+.sc-logo {
+  width: 26px; height: 26px; border-radius: var(--radius-sm, 3px);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+  overflow: hidden; font-family: var(--sans);
+}
+.sc-logo img { width: 100%; height: 100%; object-fit: cover; }
+.sc-row-txt { flex: 1; min-width: 0; line-height: 1.2; }
+.sc-row-txt b {
+  display: block; font-size: 12.5px; font-weight: 600; color: var(--sh-ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sc-row-txt small {
+  font-size: 10px; color: var(--sh-muted);
+  text-transform: uppercase; letter-spacing: .03em;
+}
+
+/* ── Carte centrale : comparateur ── */
+.sc-duel { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.sc-duel-side {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 4px; text-align: center; min-width: 0;
+}
+.sc-duel-side b { font-size: 12px; font-weight: 700; color: var(--sh-ink); }
+.sc-duel-vs { font-size: 14px; color: var(--sh-muted); flex-shrink: 0; }
+.sc-bar {
+  height: 5px; border-radius: 99px;
+  background: rgba(20,18,16,.06); overflow: hidden; margin-bottom: 5px;
+}
+.sc-bar i {
+  display: block; height: 100%; border-radius: 99px;
+  background: rgba(255,107,157,.55);
+}
+.sc-bar i.alt { background: rgba(20,160,120,.5); }
+.sc-foot-note {
+  display: block; font-size: 10px; color: var(--sh-muted);
+  text-align: center; margin-top: 6px;
+}
+
+/* ── Carte avant : fiche détaillée ── */
+a.sc-front { text-decoration: none; color: inherit; display: block; }
+a.sc-front:hover { box-shadow: 0 30px 56px -20px rgba(20,18,16,.34); transform: rotate(-1.2deg) translateY(-3px); }
+.sc-front-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.sc-front-head .sc-logo { width: 34px; height: 34px; font-size: 15px; }
+.sc-front-head b { display: block; font-family: var(--serif); font-size: 15px; font-weight: 700; color: var(--sh-ink); }
+.sc-front-head small {
+  display: block; font-size: 9.5px; font-weight: 500; color: var(--sh-muted);
+  letter-spacing: .05em; text-transform: uppercase;
+}
+.sc-front-desc {
+  font-size: 11.5px; line-height: 1.55; color: #4c4842; margin: 0 0 10px;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sc-front-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
+.sc-front-cta {
+  font-size: 11px; font-weight: 600; color: var(--sh-ink);
+  background: rgba(20,18,16,.05); border: 1px solid var(--sh-line);
+  border-radius: var(--radius-sm, 3px); padding: 6px 10px; text-align: center;
+}
+
+/* Badges prix / note (réutilise l'apparence des cartes outils) */
+.showcase .price-tag { font-size: 10px; }
+.sc-note { font-size: 11px; font-weight: 600; color: #b0761a; white-space: nowrap; }
+
+/* Skeleton de secours */
+.sc-skel {
+  height: 26px; border-radius: var(--radius-sm, 3px); margin-bottom: 8px;
+  background: linear-gradient(90deg, rgba(20,18,16,.05) 25%, rgba(20,18,16,.1) 50%, rgba(20,18,16,.05) 75%);
+  background-size: 200% 100%; animation: shimmer 1.5s infinite;
+}
+.sc-skel.tall { height: 120px; }
+
+/* ── Carrousel : transition entre compositions ── */
+.showcase-comp {
+  position: absolute; inset: 0;
+  opacity: 0; transform: scale(.97) translateY(6px);
+  transition: opacity .55s ease, transform .55s ease;
+  pointer-events: none;
+}
+.showcase-comp.active { opacity: 1; transform: none; pointer-events: auto; }
+
+/* ── Pastilles de navigation ── */
+.showcase-dots {
+  position: absolute; left: 50%; bottom: -14px;
+  transform: translateX(-50%);
+  display: flex; gap: 6px; z-index: 5;
+}
+.showcase-dots button {
+  width: 7px; height: 7px; border-radius: 99px; border: 0;
+  background: rgba(20,18,16,.18); cursor: pointer; padding: 0;
+  transition: width .25s ease, background .25s ease;
+}
+.showcase-dots button.active { width: 20px; background: var(--sh-pink); }
+.showcase:hover .showcase-dots button { background: rgba(20,18,16,.3); }
+.showcase:hover .showcase-dots button.active { background: var(--sh-pink); }
+
+/* ── Responsive : composition empilée, aucun débordement ── */
+@media (max-width: 900px) {
+  .showcase { min-height: 0; padding-bottom: 30px; }
+  .showcase-stage { height: auto; }
+  .showcase-comp { position: static; display: none; opacity: 1; transform: none; }
+  .showcase-comp.active { display: block; }
+  .showcase-card {
+    position: static; width: 100%;
+    transform: none !important; animation: none;
+    margin-bottom: 12px; box-shadow: var(--sh-shadow-sm);
+  }
+  .sc-front:hover { transform: translateY(-2px) !important; }
+  .showcase-dots { bottom: 0; }
+}
