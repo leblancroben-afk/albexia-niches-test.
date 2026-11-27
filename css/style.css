@@ -4449,3 +4449,26 @@ body.search-open { overflow: hidden; }
 .faq-a { padding: 16px 22px 20px; font-size: 14.5px; line-height: 1.7; color: var(--text-muted); }
 .faq-tool, .faq-link { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .faq-tool-plain { color: var(--text); font-weight: 600; }
+
+/* ═══ Écosystème : fibres de neurones, cartes sans saut ═══ */
+.ecosystem-section {
+  animation: none;
+  background: #0a0a0f;
+}
+.ecosystem-section::before { background: rgba(10, 10, 15, .45); }
+.eco-neurons {
+  position: absolute; inset: 0;
+  z-index: 0; pointer-events: none;
+}
+.fading-cards-container { min-height: 420px; height: 420px; }
+.fading-card,
+.fading-card.active {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.fading-card {
+  transition: opacity 1.4s ease-in-out, visibility 1.4s ease-in-out;
+}
+@media (max-width: 700px) {
+  .fading-cards-container { min-height: 500px; height: 500px; }
+}
