@@ -5284,3 +5284,17 @@ html, body { overflow-x: clip; }
 /* Zone héro assez haute pour que la carte « Voir la fiche » reste visible */
 .showcase-stage { height: 600px; }
 @media (max-width: 900px) { .showcase-stage { height: 620px; } }
+
+/* ═══ Correctifs : carte du haut sous le bouton, formule Starter lisible en thème sombre ═══ */
+.home-hero-visual.showcase { margin-top: 32px; position: relative; z-index: 0; }
+.sc-back { top: 4%; }
+.plans-grid .plan-card:not(.featured) {
+  background: #fff;
+  color: #191712;
+}
+.plans-grid .plan-card:not(.featured) .plan-name,
+.plans-grid .plan-card:not(.featured) .plan-price { color: #191712; }
+.plans-grid .plan-card:not(.featured) .plan-desc,
+.plans-grid .plan-card:not(.featured) .plan-price-sub,
+.plans-grid .plan-card:not(.featured) .plan-features li { color: #4a463d; }
+.plans-grid .plan-card-closed:not(.featured) { opacity: .6; }
