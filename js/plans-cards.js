@@ -19,7 +19,7 @@ import { db, doc, getDoc } from './firebase-config.js';
 // Interrupteur temporaire des souscriptions payantes.
 // Pour rouvrir Starter et Featured : passer simplement à true.
 // Les définitions, prix et données Firestore des plans restent inchangés.
-export const PLANS_PAYANTS_OUVERTS = true;
+export const PLANS_PAYANTS_OUVERTS = false;
 
 const PLANS_DEFAUT = {
   standard: {
