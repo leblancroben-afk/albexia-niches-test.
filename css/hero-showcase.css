@@ -185,3 +185,15 @@ a.sc-front:hover { box-shadow: 0 30px 56px -20px rgba(20,18,16,.34); transform: 
 .showcase-dots button.active { width: 20px; background: var(--sh-pink); }
 .showcase:hover .showcase-dots button { background: rgba(20,18,16,.3); }
 .showcase:hover .showcase-dots button.active { background: var(--sh-pink); }
+
+/* ── Mobile : composition pleine largeur, les cartes débordent sur les bords ── */
+@media (max-width: 900px) {
+  .home-hero-visual.showcase {
+    width: 100vw;
+    margin: 0 calc(50% - 50vw);
+    overflow: visible;
+  }
+  .showcase { min-height: 0; }
+  .showcase-stage { height: 440px; }
+  .showcase-card { touch-action: pan-y; }
+}
