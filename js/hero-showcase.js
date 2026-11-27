@@ -132,6 +132,7 @@
     const stage = zone.querySelector('.showcase-stage');
     stage.classList.remove('is-loading');
     stage.innerHTML = comps.join('');
+    try { localStorage.setItem('albexia_hero_v1', stage.innerHTML); } catch (e) {}
 
     // Pastilles
     const dots = document.getElementById('showcase-dots');
@@ -154,6 +155,19 @@
     }
     zone.addEventListener('mouseenter', () => clearInterval(_scTimer));
     zone.addEventListener('mouseleave', restart);
+    window._scSwipeGo = dir => { go((_scIndex + dir + comps.length) % comps.length); restart(); };
+    if (!zone._swipeBound) {
+      zone._swipeBound = true;
+      let x0 = null, y0 = null;
+      zone.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+      zone.addEventListener('touchend', e => {
+        if (x0 === null || !window._scSwipeGo) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        const dy = e.changedTouches[0].clientY - y0;
+        x0 = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) window._scSwipeGo(dx < 0 ? 1 : -1);
+      }, { passive: true });
+    }
     // Pause quand le hero sort de l'écran (perf)
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(entries => {
@@ -177,13 +191,19 @@
    juste après loadAllData(); — ou à la fin de renderHome(). */
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('hero-showcase')) {
+    // Affichage immédiat : dernier rendu mis en cache (puis remplacé par les données fraîches)
+    try {
+      const cached = localStorage.getItem('albexia_hero_v1');
+      const st = document.querySelector('#hero-showcase .showcase-stage');
+      if (cached && st) { st.innerHTML = cached; st.classList.remove('is-loading'); }
+    } catch (e) {}
     // différé : attendre que loadAllData() ait rempli state.tools
     const tryRender = setInterval(() => {
       if (state.tools && state.tools.length) {
         clearInterval(tryRender);
         renderHeroShowcase();
       }
-    }, 300);
+    }, 100);
     setTimeout(() => clearInterval(tryRender), 15000); // garde-fou
   }
 });
